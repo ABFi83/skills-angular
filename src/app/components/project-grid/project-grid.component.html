@@ -1,0 +1,37 @@
+<div class="project-grid">
+  <div class="projects-container">
+    <h1>I tuoi progetti</h1>
+    <div class="project-grid-container" *ngIf="projects.length > 0; else noProjects">
+      <div
+        *ngFor="let project of projects"
+        class="project-grid-item">
+
+        <!-- Regular user sees ProjectCard -->
+        <app-project-card
+          *ngIf="user && !user.is_admin && project.id !== 'ADD'"
+          [project]="project">
+        </app-project-card>
+
+        <!-- Admin sees ProjectCardLM for regular projects -->
+        <app-project-card-lm
+          *ngIf="user?.is_admin && project.id !== 'ADD'"
+          [project]="project">
+        </app-project-card-lm>
+
+        <!-- Admin sees ProjectCardADD for add new project -->
+        <app-project-card-add
+          *ngIf="user?.is_admin && project.id === 'ADD'">
+        </app-project-card-add>
+
+      </div>
+    </div>
+    <ng-template #noProjects>
+      <div class="no-projects">
+        <p>Non hai ancora progetti. Inizia creandone uno!</p>
+        <button class="create-button" routerLink="/project/new">
+          Crea nuovo progetto
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</div>

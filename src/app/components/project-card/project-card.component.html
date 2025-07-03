@@ -1,0 +1,24 @@
+<div class="project-card-link" (click)="onProjectClick()">
+  <div class="project-card">
+    <div class="project-details">
+      <div class="project-header">
+        <h4>{{ project.projectName }}</h4>
+        <app-client-logo
+          *ngIf="project.client?.code"
+          [clientCode]="project.client!.code"
+          [className]="'client-logo-small'">
+        </app-client-logo>
+      </div>
+      <div class="project-info">
+        <app-role-display
+          *ngIf="project.role"
+          [roleCode]="project.role">
+        </app-role-display>
+        <app-rating-indicator
+          *ngIf="project.evaluations && project.evaluations.length > 0"
+          [value]="project.evaluations[0].ratingAverage">
+        </app-rating-indicator>
+      </div>
+    </div>
+  </div>
+</div>

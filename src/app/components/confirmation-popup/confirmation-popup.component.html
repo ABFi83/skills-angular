@@ -1,0 +1,13 @@
+<div *ngIf="isOpen" class="confirmation-popup-overlay">
+  <div class="confirmation-popup">
+    <p class="confirmation-message">{{ message }}</p>
+    <div class="confirmation-buttons">
+      <button (click)="onConfirm()" class="confirm-button">
+        Conferma
+      </button>
+      <button (click)="onCancel()" class="cancel-button">
+        Annulla
+      </button>
+    </div>
+  </div>
+</div>

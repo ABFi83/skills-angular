@@ -1,0 +1,18 @@
+.rating-indicator {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: bold;
+}
+
+.positive-icon {
+  color: #28a745;
+}
+
+.negative-icon {
+  color: #dc3545;
+}
+
+.rating-indicator span {
+  font-size: 14px;
+}

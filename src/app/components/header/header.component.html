@@ -1,0 +1,27 @@
+<header class="header">
+  <div class="header-left">
+    <div class="header-title">SKILL</div>
+    <div class="breadcrumb-container">
+      <app-breadcrumb></app-breadcrumb>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="header-logo" (click)="toggleMenu()">
+      <img src="assets/logo192.png" alt="Logo" />
+      <div *ngIf="menuOpen" class="dropdown-menu">
+        <p>Welcome,</p>
+        <app-user-profile 
+          *ngIf="user" 
+          [username]="user.username" 
+          [clientId]="user.code">
+        </app-user-profile>
+        <p *ngIf="!user">Ospite</p>
+        <p 
+          class="logout-text"
+          (click)="handleLogout()">
+          Esci
+        </p>
+      </div>
+    </div>
+  </div>
+</header>

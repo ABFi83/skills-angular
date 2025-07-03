@@ -1,0 +1,10 @@
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.client-logo-small-user {
+  height: 20px;
+  width: auto;
+}

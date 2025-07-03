@@ -1,0 +1,44 @@
+.role-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.role-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.role-text {
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap; /* Impedisce che il testo vada a capo */
+  overflow: hidden; /* Aggiungi questa proprietà per gestire eventuali overflow */
+  text-overflow: ellipsis; /* Aggiunge i puntini di sospensione (...) se il testo è troppo lungo */
+  color: #333;
+}
+
+/* Hover effects */
+.role-display:hover .role-icon {
+  opacity: 0.8;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.role-display:hover .role-text {
+  color: #007bff;
+  transition: color 0.2s ease-in-out;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .role-text {
+    font-size: 12px;
+  }
+
+  .role-icon {
+    width: 20px;
+    height: 20px;
+  }
+}

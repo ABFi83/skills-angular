@@ -1,0 +1,24 @@
+<div class="search-dropdown">
+  <input
+    type="text"
+    [(ngModel)]="searchQuery"
+    (input)="onInputChange(searchQuery)"
+    [placeholder]="placeholder"
+    [disabled]="readOnly">
+
+  <div *ngIf="isLoading" class="loading">Loading...</div>
+
+  <div *ngIf="isDropdownVisible && items.length > 0 && !isLoading" class="dropdown-list">
+    <div
+      *ngFor="let item of items; let i = index"
+      class="dropdown-item"
+      (click)="onItemSelect(item)">
+      {{ item.name }}
+    </div>
+  </div>
+
+  <div *ngIf="isDropdownVisible && items.length === 0 && !isLoading && searchQuery.trim().length > 0"
+       class="dropdown-no-results">
+    Nessun risultato trovato
+  </div>
+</div>

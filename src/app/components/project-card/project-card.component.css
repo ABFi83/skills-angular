@@ -1,0 +1,81 @@
+.project-card-link {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.project-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 15px;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  background-color: #fff;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  flex-wrap: wrap;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.project-card:hover {
+  border-color: #004080;
+  box-shadow: 0 4px 8px rgba(0, 64, 128, 0.3);
+  transform: scale(1.02);
+}
+
+/* Stili per immagini all'interno delle project card */
+.project-card img {
+  max-height: 30px;
+  max-width: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+  transition: transform 0.2s ease;
+}
+
+.project-card img:hover {
+  transform: scale(1.05);
+}
+
+.project-details {
+  flex-grow: 1;
+  min-width: 200px;
+}
+
+.project-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.project-details h4 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.project-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 32%;
+}
+
+.client-logo-small {
+  max-height: 30px;
+
+  width: auto;
+}
+
+.project-card a {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.project-card a:hover {
+  text-decoration: underline;
+}

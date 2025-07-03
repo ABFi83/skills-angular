@@ -1,0 +1,212 @@
+.project-details-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 40px;
+}
+
+.error {
+  color: #dc3545;
+}
+
+.project-header {
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.project-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.back-button {
+  background: none;
+  border: 1px solid #ddd;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #666;
+}
+
+.back-button:hover {
+  background-color: #f8f9fa;
+}
+
+.project-header h1 {
+  margin: 0;
+  color: #333;
+  flex: 1;
+}
+
+.evaluations-container {
+  margin-bottom: 40px;
+}
+
+.evaluations-grid {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.evaluation-header {
+  display: grid;
+  grid-template-columns: 200px repeat(auto-fit, minmax(150px, 1fr));
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #dee2e6;
+}
+
+.skill-header {
+  padding: 15px;
+  font-weight: bold;
+  border-right: 1px solid #dee2e6;
+  background-color: #e9ecef;
+}
+
+.evaluation-column-header {
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  border-right: 1px solid #dee2e6;
+  transition: background-color 0.2s;
+}
+
+.evaluation-column-header:hover {
+  background-color: #e9ecef;
+}
+
+.evaluation-column-header.closed {
+  background-color: #d4edda;
+}
+
+.evaluation-column-header.open {
+  background-color: #fff3cd;
+}
+
+.evaluation-label {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.save-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.save-button:hover {
+  background-color: #0056b3;
+}
+
+.skill-row {
+  display: grid;
+  grid-template-columns: 200px repeat(auto-fit, minmax(150px, 1fr));
+  border-bottom: 1px solid #dee2e6;
+}
+
+.skill-label {
+  padding: 12px 15px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #dee2e6;
+  font-weight: 500;
+}
+
+.evaluation-cell {
+  padding: 12px;
+  text-align: center;
+  border-right: 1px solid #dee2e6;
+  position: relative;
+}
+
+.evaluation-cell.missing {
+  background-color: #f8d7da;
+}
+
+.skill-input {
+  width: 60px;
+  padding: 4px 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.skill-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.skill-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.improvement-indicator {
+  font-size: 16px;
+}
+
+.improvement-indicator.positive {
+  color: #28a745;
+}
+
+.improvement-indicator.negative {
+  color: #dc3545;
+}
+
+.improvement-indicator.neutral {
+  color: #6c757d;
+}
+
+.polygon-section {
+  padding: 15px;
+  background-color: transparent;
+  border-radius: 8px;
+  border: none;
+  align-self: flex-start;
+}
+
+.polygon-section h2 {
+  color: #495057;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.polygon-placeholder {
+  padding: 40px;
+  text-align: center;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+}
+
+.polygon-header {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.polygon-header h2 {
+  margin: 0;
+  flex-shrink: 0;
+}

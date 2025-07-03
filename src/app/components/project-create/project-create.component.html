@@ -1,0 +1,65 @@
+<div class="project-create-container">
+  <app-header></app-header>
+
+  <div class="content">
+    <app-breadcrumb></app-breadcrumb>
+
+    <div class="form-container">
+      <h1>Crea Nuovo Progetto</h1>
+
+      <form (ngSubmit)="onSubmit()" class="project-form">
+        <div *ngIf="error" class="error-message">
+          {{ error }}
+        </div>
+
+        <div class="form-group">
+          <label for="projectName">Nome Progetto *</label>
+          <input
+            id="projectName"
+            type="text"
+            [(ngModel)]="projectForm.projectName"
+            name="projectName"
+            class="form-input"
+            placeholder="Inserisci il nome del progetto"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrizione</label>
+          <textarea
+            id="description"
+            [(ngModel)]="projectForm.description"
+            name="description"
+            class="form-textarea"
+            placeholder="Inserisci una descrizione del progetto"
+            rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Cliente</label>
+          <app-search-dropdown
+            placeholder="Cerca e seleziona un cliente..."
+            [fetchItems]="fetchClients"
+            [initialValue]="projectForm.clientName"
+            (itemSelect)="onClientSelect($event)">
+          </app-search-dropdown>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="button"
+            class="cancel-button"
+            (click)="onCancel()">
+            Annulla
+          </button>
+          <button
+            type="submit"
+            class="submit-button"
+            [disabled]="isLoading">
+            {{ isLoading ? 'Creazione...' : 'Crea Progetto' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+<div class="user-profile">
+  <app-client-logo
+    *ngIf="clientId"
+    [clientCode]="clientId"
+    className="client-logo-small-user">
+  </app-client-logo>
+  <span *ngIf="viewName">{{ username }}</span>
+</div>

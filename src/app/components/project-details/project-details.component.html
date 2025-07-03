@@ -1,0 +1,101 @@
+<div class="project-details-container">
+  <app-header></app-header>
+
+  <div class="content">
+
+    <div *ngIf="loading" class="loading">
+      <p>Caricamento...</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+    </div>
+
+    <div *ngIf="!loading && !error && project" class="project-content">
+      <!-- Project Header -->
+      <div class="project-header">
+        <div class="project-info">
+          <h1>{{ project.projectName }}</h1>
+        </div>
+        <app-role-display [roleCode]="project.role"></app-role-display>
+
+        <!-- Polygon Chart Section -->
+        <div *ngIf="levelsPoligon && labelsPoligon" class="polygon-section">
+          <div class="polygon-header">
+            <h2>{{ labelPoligon }} - Valutazione Media: {{ evaluation }}</h2>
+            <app-polygon-level
+              [levels]="levelsPoligon"
+              [labels]="labelsPoligon"
+              [label]="labelPoligon">
+            </app-polygon-level>
+          </div>
+        </div>
+      </div>
+
+      <!-- Evaluations Grid -->
+      <div class="evaluations-container">
+        <div class="evaluations-grid">
+          <!-- Headers Row -->
+          <div class="evaluation-header">
+            <div class="skill-header">Competenze</div>
+            <div
+              *ngFor="let eval of project.evaluations"
+              class="evaluation-column-header"
+              [class.closed]="eval.close"
+              [class.open]="!eval.close"
+              (click)="onHeaderClick(eval)">
+              <div class="evaluation-label">{{ eval.label }}</div>
+              <div *ngIf="eval.close" class="evaluation-rating">
+                <app-rating-indicator [value]="eval.ratingAverage"></app-rating-indicator>
+              </div>
+              <button
+                *ngIf="!eval.close"
+                class="save-button"
+                (click)="onHeaderSaveClick(eval)">
+                Salva
+              </button>
+            </div>
+          </div>
+
+          <!-- Skills Rows -->
+          <div *ngFor="let label of project.labelEvaluations; let i = index" class="skill-row">
+            <div class="skill-label">{{ label.label }}</div>
+            <div
+              *ngFor="let eval of project.evaluations"
+              class="evaluation-cell"
+              [class.missing]="!eval.close && missingValues[i]">
+              <input
+                *ngIf="!eval.close"
+                type="number"
+                [(ngModel)]="eval.values[i].value"
+                min="1"
+                max="5"
+                class="skill-input">
+              <span *ngIf="eval.close" class="skill-value">
+                {{ eval.values[i].value }}
+                <span
+                  *ngIf="eval.values[i].improve !== undefined"
+                  class="improvement-indicator"
+                  [class.positive]="eval.values[i].improve === 1"
+                  [class.negative]="eval.values[i].improve === -1"
+                  [class.neutral]="eval.values[i].improve === 0">
+                  <span *ngIf="eval.values[i].improve === 1">↗</span>
+                  <span *ngIf="eval.values[i].improve === -1">↘</span>
+                  <span *ngIf="eval.values[i].improve === 0">→</span>
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Popup -->
+  <app-confirmation-popup
+    [isOpen]="isConfirmPopupOpen"
+    [message]="'Sei sicuro di voler salvare questa valutazione?'"
+    (confirm)="confirmSave()"
+    (cancel)="cancelSave()">
+  </app-confirmation-popup>
+</div>

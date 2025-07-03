@@ -1,0 +1,7 @@
+<div class="rating-indicator">
+  <span>{{ displayValue }}</span>
+  <i *ngIf="isPositive; else negativeIcon" class="fas fa-thumbs-up positive-icon"></i>
+  <ng-template #negativeIcon>
+    <i class="fas fa-thumbs-down negative-icon"></i>
+  </ng-template>
+</div>

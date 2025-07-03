@@ -1,0 +1,9 @@
+<div *ngIf="shouldDisplay" class="role-display">
+  <img
+    [src]="roleInfo.image"
+    [alt]="roleCode?.name || 'Role'"
+    class="role-icon"
+    (error)="onImageError($event)"
+  />
+  <span class="role-text">{{ roleCode?.name }}</span>
+</div>

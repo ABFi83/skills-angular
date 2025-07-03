@@ -1,0 +1,255 @@
+<div class="project-details-lm-container">
+  <app-header></app-header>
+
+  <div class="content">
+    <div *ngIf="loading" class="loading">
+      <p>Caricamento...</p>
+    </div>
+
+    <div *ngIf="error" class="error">
+      <p>{{ error }}</p>
+    </div>
+
+    <div *ngIf="!loading && !error && project" class="project-content">
+      <!-- Header Section -->
+      <div class="header-section">
+        <div class="action-buttons">
+          <button *ngIf="!isEditing" class="edit-button" (click)="toggleEdit()">
+            ✏️ Modifica
+          </button>
+          <button *ngIf="isEditing" class="save-button" (click)="saveProject()" [disabled]="saving">
+            {{ saving ? '💾 Saving...' : '💾 Salva' }}
+          </button>
+          <button *ngIf="isEditing" class="cancel-button" (click)="cancelEdit()">
+            ❌ Annulla
+          </button>
+          <button class="delete-button" (click)="deleteProject()">
+            🗑️ Elimina
+          </button>
+        </div>
+
+        <!-- Project Info -->
+        <div class="project-info-container">
+          <div class="left-section">
+            <input
+              type="text"
+              [(ngModel)]="editedProject.projectName"
+              placeholder="Nome del progetto"
+              [readonly]="!isEditing"
+              [disabled]="!isEditing"
+              class="project-name-input">
+          </div>
+
+          <div class="left-section">
+            <textarea
+              [(ngModel)]="editedProject.description"
+              placeholder="Descrizione del progetto"
+              [readonly]="!isEditing"
+              [disabled]="!isEditing"
+              class="project-description-textarea">
+            </textarea>
+          </div>
+
+          <div class="left-section client-search-container">
+            <app-search-dropdown
+              [readOnly]="!isEditing"
+              placeholder="Cerca cliente"
+              [fetchItems]="fetchClients"
+              [initialValue]="editedProject.clientName"
+              (itemSelect)="onClientSelect($event)">
+            </app-search-dropdown>
+            <app-client-logo
+              *ngIf="clientLogoCode"
+              [clientCode]="clientLogoCode"
+              className="client-logo-small-lm">
+            </app-client-logo>
+            <button
+              *ngIf="project.id"
+              class="create-evaluation-button"
+              (click)="createEvaluation()">
+              Create Evaluation
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs Container -->
+      <div class="tabs-container">
+        <div class="tabs">
+          <button
+            class="tab-button"
+            [class.active]="activeTab === 'tab1'"
+            (click)="setActiveTab('tab1')">
+            Evaluations
+          </button>
+          <button
+            class="tab-button"
+            [class.active]="activeTab === 'tab2'"
+            (click)="setActiveTab('tab2')">
+            Skills & Users
+          </button>
+        </div>
+
+        <div class="tab-content">
+          <!-- Tab 1: Evaluations -->
+          <div *ngIf="activeTab === 'tab1'" class="tab1-content">
+            <div class="table-container">
+              <div class="evaluation-dropdown-container">
+                <label for="evaluation-select" class="dropdown-label">
+                  Select Rating:
+                </label>
+                <select
+                  id="evaluation-select"
+                  class="evaluation-dropdown"
+                  [(ngModel)]="selectedEvaluationDate"
+                  (ngModelChange)="onEvaluationDateChange()">
+                  <option value="" disabled>Seleziona una data</option>
+                  <option *ngFor="let date of evaluationDates" [value]="date">
+                    {{ date }}
+                  </option>
+                </select>
+              </div>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Skill</th>
+                      <th *ngFor="let num of [1,2,3,4,5,6,7,8,9,10]">{{ num }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let skill of editedProject.skills; let skillIndex = index">
+                      <td>{{ skill.label }}</td>
+                      <td *ngFor="let colIndex of [1,2,3,4,5,6,7,8,9,10]">
+                        <div class="user-profile-container">
+                          <app-user-profile
+                            *ngFor="let evaluation of getEvaluationsForCell(skill.id, colIndex)"
+                            [username]="evaluation.user.username"
+                            [clientId]="evaluation.user.code"
+                            [viewName]="false">
+                          </app-user-profile>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Skills & Users (Read-only) -->
+          <div *ngIf="activeTab === 'tab2' && !isEditing" class="tab2-content">
+            <div class="sections-container">
+              <!-- Skills Section -->
+              <div class="skills-section">
+                <h3>Skills</h3>
+                <div class="list">
+                  <div *ngFor="let skill of editedProject.skills" class="list-item">
+                    {{ skill.label }}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Users Section -->
+              <div class="users-section">
+                <h3>Users</h3>
+                <div class="list">
+                  <div *ngFor="let user of editedProject.users" class="list-item">
+                    <app-user-profile
+                      [username]="user.username"
+                      [clientId]="user.code">
+                    </app-user-profile>
+                    <app-role-display
+                      *ngIf="user.role"
+                      [roleCode]="user.role">
+                    </app-role-display>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab 2: Skills & Users (Editing) -->
+          <div *ngIf="activeTab === 'tab2' && isEditing" class="tab2-content">
+            <div class="skills-section">
+              <div class="table-header">
+                <h3>Skills</h3>
+                <button
+                  *ngIf="project.id"
+                  class="add-button"
+                  [class.active]="isSkillSearchVisible"
+                  (click)="toggleSkillSearch()">
+                  {{ isSkillSearchVisible ? '-' : '+' }}
+                </button>
+              </div>
+              <div class="skills-container" [class.dropdown-visible]="isSkillSearchVisible">
+                <div class="list">
+                  <div *ngFor="let skill of editedProject.skills; let index = index" class="list-item">
+                    {{ skill.label }}
+                    <button class="delete-button" (click)="removeSkill(index)">
+                      -
+                    </button>
+                  </div>
+                </div>
+
+                <div *ngIf="isSkillSearchVisible" class="skill-search-dropdown">
+                  <app-search-dropdown
+                    placeholder="Cerca skill"
+                    [fetchItems]="fetchSkills"
+                    (itemSelect)="onSkillSelect($event)"
+                    initialValue="">
+                  </app-search-dropdown>
+                  <p *ngIf="skillError" class="error-message">{{ skillError }}</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="users-section">
+              <div class="table-header">
+                <h3>Users</h3>
+                <button
+                  *ngIf="project.id"
+                  class="add-button"
+                  [class.active]="isUserSearchVisible"
+                  (click)="toggleUserSearch()">
+                  {{ isUserSearchVisible ? '-' : '+' }}
+                </button>
+              </div>
+              <div *ngIf="userError" class="error-message">{{ userError }}</div>
+              <div class="users-container" [class.dropdown-visible]="isUserSearchVisible">
+                <div class="list">
+                  <div *ngFor="let user of editedProject.users; let index = index" class="list-item">
+                    <app-user-profile
+                      [username]="user.username"
+                      [clientId]="user.code">
+                    </app-user-profile>
+                    <app-role-display
+                      *ngIf="user.role"
+                      [roleCode]="user.role">
+                    </app-role-display>
+                    <button class="delete-button" (click)="removeUser(index)">
+                      -
+                    </button>
+                  </div>
+                </div>
+
+                <div *ngIf="isUserSearchVisible" class="user-search-dropdown">
+                  <app-search-dropdown
+                    placeholder="Cerca utente"
+                    [fetchItems]="fetchUsers"
+                    (itemSelect)="onUserSelect($event)">
+                  </app-search-dropdown>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Evaluation Popup -->
+  <app-evaluation-popup
+    [isVisible]="showEvaluationPopup">
+  </app-evaluation-popup>
+</div>

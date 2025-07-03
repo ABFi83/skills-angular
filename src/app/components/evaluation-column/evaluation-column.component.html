@@ -1,0 +1,11 @@
+<div class="table-column">
+  <h3
+    class="header"
+    [class.clicked]="isHeaderClicked"
+    (click)="onHeaderClick()">
+    {{ header }}
+  </h3>
+  <ul>
+    <li *ngFor="let item of data; let i = index">{{ item }}</li>
+  </ul>
+</div>

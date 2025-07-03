@@ -1,0 +1,23 @@
+<div class="project-card-link" (click)="onProjectClick()">
+  <div class="project-card">
+    <div class="project-details">
+      <h3>{{ project.projectName }}</h3>
+
+      <div class="users-container">
+        <div
+          *ngFor="let user of project.users"
+          class="user-row">
+          <app-user-profile
+            [username]="user.username"
+            [clientId]="user.code"
+            [viewName]="false">
+          </app-user-profile>
+          <app-rating-indicator
+            *ngIf="user.ratingAverage"
+            [value]="user.ratingAverage">
+          </app-rating-indicator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
