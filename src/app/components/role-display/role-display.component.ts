@@ -18,23 +18,22 @@ export class RoleDisplayComponent {
   @Input() roleCode?: RoleResponse;
 
   private roleData: Record<string, RoleData> = {
-    ADMIN: { description: 'Amministratore', image: 'assets/images/admin.png' },
-    DV: { description: 'Developer', image: 'assets/dev.jpg' },
-    DESIGNER: { description: 'Designer', image: 'assets/images/designer.png' },
-    TL: { description: 'Team Lead', image: 'assets/tl.png' },
-    PM: { description: 'Project Manager', image: 'assets/images/pm.png' },
-    QA: { description: 'Quality Assurance', image: 'assets/images/qa.png' },
-    LM: { description: 'Line Manager', image: 'assets/LM.png' },
+    ADMIN: { description: 'Amministratore', image: 'assets/images/admin.svg' },
+    DV: { description: 'Developer', image: 'assets/dev.svg' },
+    DESIGNER: { description: 'Designer', image: 'assets/images/designer.svg' },
+    TL: { description: 'Team Lead', image: 'assets/tl.svg' },
+    PM: { description: 'Project Manager', image: 'assets/images/pm.svg' },
+    QA: { description: 'Quality Assurance', image: 'assets/images/qa.svg' },
+    LM: { description: 'Line Manager', image: 'assets/LM.svg' },
   };
-
   get roleInfo(): RoleData {
     if (!this.roleCode) {
-      return { description: 'Ruolo Sconosciuto', image: 'assets/images/default.png' };
+      return { description: 'Ruolo Sconosciuto', image: 'assets/images/default.svg' };
     }
 
     return this.roleData[this.roleCode.code] || {
       description: 'Ruolo Sconosciuto',
-      image: 'assets/images/default.png'
+      image: 'assets/images/default.svg'
     };
   }
 
@@ -43,6 +42,6 @@ export class RoleDisplayComponent {
   }
 
   onImageError(event: any): void {
-    event.target.src = 'assets/images/default-role.png';
+    event.target.src = 'assets/images/default-role.svg';
   }
 }
