@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 export interface EvaluationData {
-  label: string;
+  label: string; // Questo ora sarà una data
   startDate: string;
   endDate: string;
 }
@@ -30,7 +30,14 @@ export class EvaluationPopupComponent {
 
   onSubmit(): void {
     if (this.isFormValid()) {
-      this.evaluationCreate.emit({ ...this.evaluationData });
+      // Creiamo l'oggetto con la data della valutazione
+      const evaluationData: EvaluationData = {
+        label: this.evaluationData.label, // Ora è una data
+        startDate: this.evaluationData.startDate,
+        endDate: this.evaluationData.endDate
+      };
+
+      this.evaluationCreate.emit(evaluationData);
       this.resetForm();
     }
   }
@@ -75,6 +82,7 @@ export class EvaluationPopupComponent {
   }
 
   get isLabelValid(): boolean {
+    // Ora che label è una data, verifichiamo che sia una data valida
     return !!(this.evaluationData.label && this.evaluationData.label.trim().length > 0);
   }
 }

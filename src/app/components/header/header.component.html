@@ -7,16 +7,16 @@
   </div>
   <div class="header-right">
     <div class="header-logo" (click)="toggleMenu()">
-      <img src="assets/logo192.png" alt="Logo" />
+      <img src="assets/logo.svg" alt="Logo" />
       <div *ngIf="menuOpen" class="dropdown-menu">
         <p>Welcome,</p>
-        <app-user-profile 
-          *ngIf="user" 
-          [username]="user.username" 
+        <app-user-profile
+          *ngIf="user"
+          [username]="user.username"
           [clientId]="user.code">
         </app-user-profile>
         <p *ngIf="!user">Ospite</p>
-        <p 
+        <p
           class="logout-text"
           (click)="handleLogout()">
           Esci

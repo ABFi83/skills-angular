@@ -250,6 +250,8 @@
 
   <!-- Evaluation Popup -->
   <app-evaluation-popup
-    [isVisible]="showEvaluationPopup">
+    [isVisible]="showEvaluationPopup"
+    (evaluationCreate)="onEvaluationCreate($event)"
+    (popupClose)="onEvaluationPopupClose()">
   </app-evaluation-popup>
 </div>

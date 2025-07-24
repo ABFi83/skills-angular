@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../config/environment';
+import { ApiService } from './api.service';
 
 export interface Client {
   id: string;
@@ -16,7 +16,7 @@ export interface Client {
 export class ClientService {
   private readonly API_BASE_URL = environment.apiBaseUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService) {}
 
   /**
    * Genera l'URL del logo del cliente
@@ -36,13 +36,8 @@ export class ClientService {
    * @returns Observable con la lista dei clienti
    */
   getClients(searchQuery: string = ''): Observable<Client[]> {
-    let params = new HttpParams();
-
-    if (searchQuery) {
-      params = params.set('search', searchQuery);
-    }
-
-    return this.http.get<Client[]>(`${this.API_BASE_URL}/clients`, { params });
+    const endpoint = searchQuery ? `/clients?search=${searchQuery}` : '/clients';
+    return this.apiService.get<Client[]>(endpoint);
   }
 
   /**
@@ -51,7 +46,7 @@ export class ClientService {
    * @returns Observable con i dati del cliente
    */
   getClientById(clientId: string): Observable<Client> {
-    return this.http.get<Client>(`${this.API_BASE_URL}/clients/${clientId}`);
+    return this.apiService.get<Client>(`/clients/${clientId}`);
   }
 
   /**
@@ -60,7 +55,7 @@ export class ClientService {
    * @returns Observable con il cliente creato
    */
   createClient(client: Omit<Client, 'id'>): Observable<Client> {
-    return this.http.post<Client>(`${this.API_BASE_URL}/clients`, client);
+    return this.apiService.post<Client>('/clients', client);
   }
 
   /**
@@ -70,7 +65,7 @@ export class ClientService {
    * @returns Observable con il cliente aggiornato
    */
   updateClient(clientId: string, client: Partial<Client>): Observable<Client> {
-    return this.http.put<Client>(`${this.API_BASE_URL}/clients/${clientId}`, client);
+    return this.apiService.put<Client>(`/clients/${clientId}`, client);
   }
 
   /**
@@ -79,7 +74,7 @@ export class ClientService {
    * @returns Observable vuoto
    */
   deleteClient(clientId: string): Observable<void> {
-    return this.http.delete<void>(`${this.API_BASE_URL}/clients/${clientId}`);
+    return this.apiService.delete<void>(`/clients/${clientId}`);
   }
 
   /**

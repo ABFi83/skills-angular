@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../config/environment';
+import { ApiService } from './api.service';
 
 export interface Skill {
   id: string;
@@ -24,9 +24,7 @@ export interface SkillCategory {
   providedIn: 'root'
 })
 export class SkillService {
-  private readonly API_BASE_URL = environment.apiBaseUrl;
-
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService) {}
 
   /**
    * Recupera le skill con filtro di ricerca
@@ -34,13 +32,8 @@ export class SkillService {
    * @returns Observable con array di skill
    */
   getSkills(searchQuery: string = ''): Observable<Skill[]> {
-    let params = new HttpParams();
-
-    if (searchQuery) {
-      params = params.set('search', searchQuery);
-    }
-
-    return this.http.get<Skill[]>(`${this.API_BASE_URL}/skills`, { params });
+    const endpoint = searchQuery ? `/skills?search=${searchQuery}` : '/skills';
+    return this.apiService.get<Skill[]>(endpoint);
   }
 
   /**
@@ -49,7 +42,7 @@ export class SkillService {
    * @returns Observable con i dati della skill
    */
   getSkillById(skillId: string): Observable<Skill> {
-    return this.http.get<Skill>(`${this.API_BASE_URL}/skills/${skillId}`);
+    return this.apiService.get<Skill>(`/skills/${skillId}`);
   }
 
   /**
@@ -58,7 +51,7 @@ export class SkillService {
    * @returns Observable con la skill creata
    */
   createSkill(skill: Omit<Skill, 'id'>): Observable<Skill> {
-    return this.http.post<Skill>(`${this.API_BASE_URL}/skills`, skill);
+    return this.apiService.post<Skill>('/skills', skill);
   }
 
   /**
@@ -68,7 +61,7 @@ export class SkillService {
    * @returns Observable con la skill aggiornata
    */
   updateSkill(skillId: string, skill: Partial<Skill>): Observable<Skill> {
-    return this.http.put<Skill>(`${this.API_BASE_URL}/skills/${skillId}`, skill);
+    return this.apiService.put<Skill>(`/skills/${skillId}`, skill);
   }
 
   /**
@@ -77,7 +70,7 @@ export class SkillService {
    * @returns Observable vuoto
    */
   deleteSkill(skillId: string): Observable<void> {
-    return this.http.delete<void>(`${this.API_BASE_URL}/skills/${skillId}`);
+    return this.apiService.delete<void>(`/skills/${skillId}`);
   }
 
   /**
@@ -85,7 +78,7 @@ export class SkillService {
    * @returns Observable con array di categorie
    */
   getSkillCategories(): Observable<SkillCategory[]> {
-    return this.http.get<SkillCategory[]>(`${this.API_BASE_URL}/skills/categories`);
+    return this.apiService.get<SkillCategory[]>('/skills/categories');
   }
 
   /**
@@ -94,7 +87,7 @@ export class SkillService {
    * @returns Observable con array di skill
    */
   getSkillsByCategory(categoryId: string): Observable<Skill[]> {
-    return this.http.get<Skill[]>(`${this.API_BASE_URL}/skills/categories/${categoryId}/skills`);
+    return this.apiService.get<Skill[]>(`/skills/categories/${categoryId}/skills`);
   }
 
   /**
@@ -108,22 +101,24 @@ export class SkillService {
     level?: number;
     isActive?: boolean;
   }): Observable<Skill[]> {
-    let params = new HttpParams();
+    const params = new URLSearchParams();
 
     if (filters.query) {
-      params = params.set('search', filters.query);
+      params.set('search', filters.query);
     }
     if (filters.category) {
-      params = params.set('category', filters.category);
+      params.set('category', filters.category);
     }
     if (filters.level !== undefined) {
-      params = params.set('level', filters.level.toString());
+      params.set('level', filters.level.toString());
     }
     if (filters.isActive !== undefined) {
-      params = params.set('isActive', filters.isActive.toString());
+      params.set('isActive', filters.isActive.toString());
     }
 
-    return this.http.get<Skill[]>(`${this.API_BASE_URL}/skills/search`, { params });
+    const queryString = params.toString();
+    const endpoint = queryString ? `/skills/search?${queryString}` : '/skills/search';
+    return this.apiService.get<Skill[]>(endpoint);
   }
 
   /**
@@ -132,8 +127,7 @@ export class SkillService {
    * @returns Observable con array di skill popolari
    */
   getPopularSkills(limit: number = 10): Observable<Skill[]> {
-    const params = new HttpParams().set('limit', limit.toString());
-    return this.http.get<Skill[]>(`${this.API_BASE_URL}/skills/popular`, { params });
+    return this.apiService.get<Skill[]>(`/skills/popular?limit=${limit}`);
   }
 
   /**
@@ -142,7 +136,7 @@ export class SkillService {
    * @returns Observable con array di skill consigliate
    */
   getRecommendedSkills(userId: string): Observable<Skill[]> {
-    return this.http.get<Skill[]>(`${this.API_BASE_URL}/users/${userId}/recommended-skills`);
+    return this.apiService.get<Skill[]>(`/users/${userId}/recommended-skills`);
   }
 
   /**
@@ -151,7 +145,6 @@ export class SkillService {
    * @returns Observable con boolean che indica se esiste
    */
   validateSkillExists(skillName: string): Observable<boolean> {
-    const params = new HttpParams().set('name', skillName);
-    return this.http.get<boolean>(`${this.API_BASE_URL}/skills/validate`, { params });
+    return this.apiService.get<boolean>(`/skills/validate?name=${skillName}`);
   }
 }

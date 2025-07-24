@@ -1,16 +1,14 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../config/environment';
 import { EvaluationLM, EvaluationsLM, EvaluationRequest } from '../interfaces/evaluation.interface';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EvaluationService {
-  private readonly API_BASE_URL = environment.apiBaseUrl;
-
-  constructor(private http: HttpClient) {}
+  constructor(private apiService: ApiService) {}
 
   /**
    * Recupera le valutazioni per un progetto in una data specifica
@@ -19,11 +17,8 @@ export class EvaluationService {
    * @returns Observable con le valutazioni
    */
   getEvaluationsByDate(projectId: string, evaluationDate: string): Observable<EvaluationsLM> {
-    const params = new HttpParams().set('evaluationDate', evaluationDate);
-
-    return this.http.get<EvaluationsLM>(
-      `${this.API_BASE_URL}/projects/${projectId}/evaluations`,
-      { params }
+    return this.apiService.get<EvaluationsLM>(
+      `/projects/${projectId}/evaluation?evaluationDate=${evaluationDate}`
     );
   }
 
@@ -43,8 +38,8 @@ export class EvaluationService {
    * @returns Observable con array di date
    */
   getEvaluationDates(projectId: string): Observable<string[]> {
-    return this.http.get<string[]>(
-      `${this.API_BASE_URL}/projects/${projectId}/evaluations-dates`
+    return this.apiService.get<string[]>(
+      `/projects/${projectId}/evaluations-dates`
     );
   }
 
@@ -55,8 +50,8 @@ export class EvaluationService {
    * @returns Observable con la valutazione creata
    */
   createEvaluation(projectId: string, evaluation: EvaluationRequest): Observable<any> {
-    return this.http.post<any>(
-      `${this.API_BASE_URL}/projects/${projectId}/evaluations`,
+    return this.apiService.post<any>(
+      `/projects/${projectId}/evaluation`,
       evaluation
     );
   }
@@ -69,8 +64,8 @@ export class EvaluationService {
    * @returns Observable con la valutazione aggiornata
    */
   updateEvaluation(projectId: string, evaluationId: string, evaluation: Partial<EvaluationRequest>): Observable<any> {
-    return this.http.put<any>(
-      `${this.API_BASE_URL}/projects/${projectId}/evaluations/${evaluationId}`,
+    return this.apiService.put<any>(
+      `/projects/${projectId}/evaluation/${evaluationId}`,
       evaluation
     );
   }
@@ -82,8 +77,8 @@ export class EvaluationService {
    * @returns Observable vuoto
    */
   deleteEvaluation(projectId: string, evaluationId: string): Observable<void> {
-    return this.http.delete<void>(
-      `${this.API_BASE_URL}/projects/${projectId}/evaluations/${evaluationId}`
+    return this.apiService.delete<void>(
+      `/projects/${projectId}/evaluation/${evaluationId}`
     );
   }
 
@@ -95,8 +90,8 @@ export class EvaluationService {
    * @returns Observable con la risposta
    */
   saveEvaluationScores(projectId: string, evaluationId: string, scores: any[]): Observable<any> {
-    return this.http.post<any>(
-      `${this.API_BASE_URL}/projects/${projectId}/evaluations/${evaluationId}/scores`,
+    return this.apiService.post<any>(
+      `/projects/${projectId}/evaluation/${evaluationId}/scores`,
       { scores }
     );
   }
@@ -108,8 +103,8 @@ export class EvaluationService {
    * @returns Observable con la valutazione chiusa
    */
   closeEvaluation(projectId: string, evaluationId: string): Observable<any> {
-    return this.http.patch<any>(
-      `${this.API_BASE_URL}/projects/${projectId}/evaluations/${evaluationId}/close`,
+    return this.apiService.patch<any>(
+      `/projects/${projectId}/evaluation/${evaluationId}/close`,
       {}
     );
   }
@@ -120,8 +115,8 @@ export class EvaluationService {
    * @returns Observable con le statistiche
    */
   getEvaluationStats(projectId: string): Observable<any> {
-    return this.http.get<any>(
-      `${this.API_BASE_URL}/projects/${projectId}/evaluations/stats`
+    return this.apiService.get<any>(
+      `/projects/${projectId}/evaluation/stats`
     );
   }
 }

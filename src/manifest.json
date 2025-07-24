@@ -1,0 +1,26 @@
+{
+  "short_name": "Skills Angular",
+  "name": "Skills Angular - Project Management",
+  "description": "Angular application for skills and project management",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "assets/logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192"
+    },
+    {
+      "src": "assets/logo512.png",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1d4ed8",
+  "background_color": "#ffffff"
+}
